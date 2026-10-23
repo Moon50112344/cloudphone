@@ -1,0 +1,2291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Moon Studio</title>
+
+  <meta
+    name="description"
+    content="Moon Studio is a personal space for creating, exploring, and sharing apps, tools, experiments, and ideas around technology."
+  >
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Moon Studio">
+  <meta
+    property="og:description"
+    content="Moon Studio is a personal space for creating, exploring, and sharing apps, tools, experiments, and ideas around technology."
+  >
+  <meta property="og:image" content="https://moonstudio.us.ci/logo.jpg">
+  <meta property="og:url" content="https://moonstudio.us.ci/">
+  <meta property="og:site_name" content="Moon Studio">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Moon Studio">
+  <meta
+    name="twitter:description"
+    content="Moon Studio is a personal space for creating, exploring, and sharing apps, tools, experiments, and ideas around technology."
+  >
+  <meta name="twitter:image" content="https://moonstudio.us.ci/logo.jpg">
+
+  <link rel="icon" type="image/png" href="/logo.jpg">
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+
+    :root {
+      --bg: #0b1120;
+      --card: rgba(30, 41, 59, 0.58);
+      --border: rgba(255, 255, 255, 0.09);
+
+      --blue: #3b82f6;
+      --blue-light: #60a5fa;
+
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --subtle: #64748b;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      overflow-x: hidden;
+
+      background:
+        radial-gradient(
+          circle at 15% 8%,
+          rgba(59, 130, 246, 0.15),
+          transparent 28%
+        ),
+        radial-gradient(
+          circle at 85% 18%,
+          rgba(59, 130, 246, 0.09),
+          transparent 26%
+        ),
+        var(--bg);
+
+      color: var(--text);
+
+      font-family: "Inter", sans-serif;
+
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .page {
+      width: min(1120px, calc(100% - 36px));
+      margin: auto;
+      padding: 70px 0 40px;
+    }
+
+
+    /* =====================================================
+       EXTREME GLITCH CORE
+    ===================================================== */
+
+    .hero,
+    .about-card,
+    .project-card {
+
+      --gx: 0px;
+      --gy: 0px;
+      --gr: 0deg;
+      --gs: 1;
+
+      --slice-x: 0px;
+      --slice-y: 0px;
+      --slice-r: 0deg;
+      --slice-scale: 1;
+
+      position: relative;
+      isolation: isolate;
+    }
+
+
+    /*
+      CENTRAL CORRUPTED RECTANGLE
+    */
+
+    .hero::after,
+    .about-card::after,
+    .project-card::after {
+
+      content: "";
+
+      position: absolute;
+
+      left: -55%;
+      top: 28%;
+
+      width: 210%;
+      height: 48%;
+
+      z-index: 100;
+
+      pointer-events: none;
+
+      opacity: 0;
+
+      background:
+        repeating-linear-gradient(
+          0deg,
+          rgba(255,255,255,0) 0px,
+          rgba(255,255,255,0) 2px,
+          rgba(255,255,255,.28) 3px,
+          rgba(255,255,255,.08) 5px,
+          rgba(0,180,255,.30) 7px,
+          rgba(255,0,90,.30) 9px,
+          rgba(255,255,255,0) 12px
+        );
+
+      mix-blend-mode: screen;
+
+      transform:
+        translate3d(
+          var(--slice-x),
+          var(--slice-y),
+          0
+        )
+        rotate(var(--slice-r))
+        scale(var(--slice-scale));
+
+      clip-path:
+        polygon(
+          0 12%,
+          7% 0%,
+          15% 19%,
+          25% 4%,
+          35% 25%,
+          45% 0%,
+          55% 17%,
+          65% 3%,
+          76% 24%,
+          86% 2%,
+          94% 18%,
+          100% 7%,
+
+          100% 86%,
+          93% 74%,
+          84% 100%,
+          73% 80%,
+          63% 96%,
+          52% 72%,
+          41% 100%,
+          30% 79%,
+          19% 98%,
+          9% 76%,
+          0 92%
+        );
+
+      animation:
+        CENTRAL_GLITCH .18s steps(1,end) infinite;
+    }
+
+
+    /*
+      SECOND CORRUPTION BAR
+    */
+
+    .hero::before,
+    .about-card::before,
+    .project-card::before {
+
+      content: "";
+
+      position: absolute;
+
+      left: -60%;
+      top: 39%;
+
+      width: 220%;
+      height: 22%;
+
+      z-index: 110;
+
+      pointer-events: none;
+
+      opacity: 0;
+
+      background:
+        repeating-linear-gradient(
+          90deg,
+          transparent 0 18px,
+          rgba(255,0,80,.85) 18px 25px,
+          transparent 25px 42px,
+          rgba(0,200,255,.90) 42px 51px,
+          transparent 51px 72px,
+          rgba(255,255,255,.35) 72px 77px
+        );
+
+      mix-blend-mode: screen;
+
+      transform:
+        translate3d(
+          var(--gx),
+          var(--gy),
+          0
+        )
+        skewX(var(--gr))
+        scaleX(var(--gs));
+
+      clip-path:
+        polygon(
+          0 25%,
+          8% 5%,
+          17% 40%,
+          27% 0%,
+          38% 45%,
+          49% 8%,
+          60% 52%,
+          71% 2%,
+          82% 38%,
+          92% 0%,
+          100% 30%,
+
+          100% 78%,
+          91% 100%,
+          80% 67%,
+          69% 100%,
+          57% 62%,
+          46% 100%,
+          35% 65%,
+          23% 96%,
+          12% 58%,
+          0 90%
+        );
+
+      animation:
+        SLICE_GLITCH .12s steps(1,end) infinite;
+    }
+
+
+    /*
+      RANDOM DIGITAL BLOCK
+    */
+
+    .hero,
+    .about-card,
+    .project-card {
+
+      overflow: hidden;
+    }
+
+
+    .glitch-block {
+
+      position: absolute;
+
+      left: -20%;
+      top: 35%;
+
+      width: 140%;
+      height: 30%;
+
+      z-index: 120;
+
+      pointer-events: none;
+
+      opacity: 0;
+
+      background:
+        repeating-linear-gradient(
+          90deg,
+          rgba(255,0,80,.9) 0 4px,
+          rgba(0,180,255,.9) 4px 9px,
+          rgba(255,255,255,.7) 9px 12px,
+          transparent 12px 24px
+        );
+
+      mix-blend-mode: difference;
+
+      transform:
+        translate(
+          var(--block-x),
+          var(--block-y)
+        )
+        skewX(var(--block-skew))
+        scaleY(var(--block-scale));
+
+      clip-path:
+        polygon(
+          0 15%,
+          13% 0,
+          25% 22%,
+          38% 5%,
+          51% 28%,
+          65% 0,
+          78% 19%,
+          90% 4%,
+          100% 25%,
+
+          100% 78%,
+          87% 100%,
+          74% 75%,
+          61% 100%,
+          48% 73%,
+          34% 97%,
+          20% 72%,
+          8% 100%,
+          0 80%
+        );
+    }
+
+
+    /*
+      CENTRAL GLITCH
+    */
+
+    @keyframes CENTRAL_GLITCH {
+
+      0%,
+      100% {
+        opacity: 0;
+      }
+
+      3% {
+        opacity: .95;
+        transform:
+          translate3d(-170px,-8px,0)
+          rotate(-7deg)
+          scale(1.4);
+      }
+
+      4% {
+        opacity: 1;
+        transform:
+          translate3d(210px,5px,0)
+          rotate(8deg)
+          scale(1.7);
+      }
+
+      5% {
+        opacity: .4;
+        transform:
+          translate3d(-280px,12px,0)
+          rotate(-11deg)
+          scale(1.9);
+      }
+
+      6% {
+        opacity: 0;
+      }
+
+      19% {
+        opacity: 0;
+      }
+
+      20% {
+        opacity: 1;
+        transform:
+          translate3d(260px,-15px,0)
+          rotate(12deg)
+          scale(1.8);
+      }
+
+      21% {
+        opacity: .8;
+        transform:
+          translate3d(-230px,7px,0)
+          rotate(-15deg)
+          scale(1.5);
+      }
+
+      22% {
+        opacity: 0;
+      }
+
+      37% {
+        opacity: 0;
+      }
+
+      38% {
+        opacity: 1;
+        transform:
+          translate3d(-320px,3px,0)
+          rotate(-18deg)
+          scale(2);
+      }
+
+      39% {
+        opacity: .9;
+        transform:
+          translate3d(320px,-5px,0)
+          rotate(18deg)
+          scale(1.6);
+      }
+
+      40% {
+        opacity: 0;
+      }
+
+      57% {
+        opacity: 0;
+      }
+
+      58% {
+        opacity: 1;
+        transform:
+          translate3d(380px,10px,0)
+          rotate(20deg)
+          scale(2.1);
+      }
+
+      59% {
+        opacity: .8;
+        transform:
+          translate3d(-380px,-8px,0)
+          rotate(-20deg)
+          scale(1.8);
+      }
+
+      60% {
+        opacity: 0;
+      }
+
+      77% {
+        opacity: 0;
+      }
+
+      78% {
+        opacity: 1;
+        transform:
+          translate3d(-420px,0,0)
+          rotate(-24deg)
+          scale(2.2);
+      }
+
+      79% {
+        opacity: 1;
+        transform:
+          translate3d(420px,14px,0)
+          rotate(24deg)
+          scale(1.9);
+      }
+
+      80% {
+        opacity: 0;
+      }
+    }
+
+
+    /*
+      FAST SLICE
+    */
+
+    @keyframes SLICE_GLITCH {
+
+      0%,
+      100% {
+        opacity: 0;
+      }
+
+      8% {
+        opacity: 1;
+
+        transform:
+          translate3d(-240px,0,0)
+          skewX(-28deg)
+          scaleX(1.7);
+      }
+
+      9% {
+        opacity: 0;
+      }
+
+      25% {
+        opacity: .95;
+
+        transform:
+          translate3d(300px,-7px,0)
+          skewX(31deg)
+          scaleX(.55);
+      }
+
+      26% {
+        opacity: 0;
+      }
+
+      47% {
+        opacity: 1;
+
+        transform:
+          translate3d(-350px,8px,0)
+          skewX(-35deg)
+          scaleX(2);
+      }
+
+      48% {
+        opacity: 0;
+      }
+
+      68% {
+        opacity: .95;
+
+        transform:
+          translate3d(400px,-5px,0)
+          skewX(38deg)
+          scaleX(.45);
+      }
+
+      69% {
+        opacity: 0;
+      }
+
+      88% {
+        opacity: 1;
+
+        transform:
+          translate3d(-450px,3px,0)
+          skewX(-42deg)
+          scaleX(2.2);
+      }
+
+      89% {
+        opacity: 0;
+      }
+    }
+
+
+    /*
+      TEXT CORRUPTION
+    */
+
+    .hero h1,
+    .about-card h2,
+    .project-card h3 {
+
+      animation:
+        TEXT_GLITCH .23s steps(1,end) infinite;
+
+      will-change:
+        transform,
+        text-shadow;
+    }
+
+
+    @keyframes TEXT_GLITCH {
+
+      0%,
+      100% {
+        transform:
+          translate(0,0)
+          skewX(0);
+
+        text-shadow:
+          none;
+      }
+
+      5% {
+        transform:
+          translate(-22px,3px)
+          skewX(-14deg);
+
+        text-shadow:
+          22px 0 rgba(255,0,70,1),
+          -22px 0 rgba(0,200,255,1);
+      }
+
+      6% {
+        transform:
+          translate(27px,-4px)
+          skewX(17deg);
+
+        text-shadow:
+          -28px 0 rgba(255,0,70,1),
+          28px 0 rgba(0,220,255,1);
+      }
+
+      7% {
+        transform:
+          translate(-15px,0)
+          skewX(-8deg);
+
+        text-shadow:
+          15px 0 rgba(255,255,255,.9),
+          -17px 0 rgba(59,130,246,1);
+      }
+
+      8% {
+        transform:
+          translate(0,0);
+
+        text-shadow:
+          none;
+      }
+
+      38% {
+        transform:
+          translate(30px,5px)
+          skewX(-20deg);
+
+        text-shadow:
+          -30px 0 rgba(255,0,70,1),
+          27px 0 rgba(0,210,255,1);
+      }
+
+      39% {
+        transform:
+          translate(-32px,-4px)
+          skewX(20deg);
+
+        text-shadow:
+          32px 0 rgba(255,0,70,1),
+          -30px 0 rgba(0,210,255,1);
+      }
+
+      40% {
+        transform:
+          translate(0,0);
+
+        text-shadow:
+          none;
+      }
+
+      70% {
+        transform:
+          translate(-35px,0)
+          skewX(-25deg);
+
+        text-shadow:
+          35px 0 rgba(255,0,70,1),
+          -35px 0 rgba(0,210,255,1);
+      }
+
+      71% {
+        transform:
+          translate(38px,4px)
+          skewX(23deg);
+      }
+
+      72% {
+        transform:
+          translate(0,0);
+
+        text-shadow:
+          none;
+      }
+    }
+
+
+    /* =====================================================
+       HERO
+    ===================================================== */
+
+    .hero {
+
+      padding: 48px;
+      margin-bottom: 28px;
+
+      border-radius: 32px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255,255,255,.075),
+          rgba(255,255,255,.025)
+        ),
+        var(--card);
+
+      border:
+        1px solid var(--border);
+
+      backdrop-filter:
+        blur(24px);
+
+      -webkit-backdrop-filter:
+        blur(24px);
+
+      box-shadow:
+        0 25px 70px rgba(0,0,0,.32),
+        inset 0 1px 0 rgba(255,255,255,.08);
+    }
+
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+
+    .eyebrow {
+
+      display: inline-flex;
+      align-items: center;
+
+      padding: 7px 13px;
+
+      border-radius: 999px;
+
+      background: rgba(59,130,246,.10);
+
+      border: 1px solid rgba(59,130,246,.20);
+
+      color: var(--blue-light);
+
+      font-size: .72rem;
+      font-weight: 600;
+
+      text-transform: uppercase;
+      letter-spacing: .12em;
+    }
+
+
+    .hero h1 {
+
+      margin: 28px 0 20px;
+
+      color: white;
+
+      font-size: clamp(3.4rem,8vw,6.5rem);
+
+      line-height: .92;
+      font-weight: 700;
+
+      letter-spacing: -.07em;
+    }
+
+
+    .hero h1 span {
+      color: var(--blue);
+    }
+
+
+    .hero-description {
+
+      max-width: 720px;
+
+      margin: 0;
+
+      color: var(--muted);
+
+      font-size: 1.15rem;
+      line-height: 1.8;
+    }
+
+
+    .established {
+
+      margin-top: 26px;
+
+      color: var(--subtle);
+
+      font-size: .85rem;
+    }
+
+
+    .established strong {
+
+      color: #94a3b8;
+
+      font-weight: 500;
+    }
+
+
+    /* =====================================================
+       ABOUT
+    ===================================================== */
+
+    .about {
+
+      display: grid;
+
+      grid-template-columns:
+        1.25fr .75fr;
+
+      gap: 28px;
+
+      margin-bottom: 70px;
+    }
+
+
+    .about-card {
+
+      padding: 36px;
+
+      border-radius: 28px;
+
+      background:
+        rgba(15,23,42,.58);
+
+      border:
+        1px solid rgba(255,255,255,.07);
+
+      box-shadow:
+        0 18px 50px rgba(0,0,0,.22),
+        inset 0 1px 0 rgba(255,255,255,.04);
+
+      backdrop-filter:
+        blur(18px);
+
+      -webkit-backdrop-filter:
+        blur(18px);
+    }
+
+
+    .about-card h2 {
+
+      margin:
+        0 0 18px;
+
+      color:
+        white;
+
+      font-size:
+        1.55rem;
+
+      font-weight:
+        600;
+
+      letter-spacing:
+        -.035em;
+    }
+
+
+    .about-card p {
+
+      margin:
+        0;
+
+      color:
+        var(--muted);
+
+      line-height:
+        1.8;
+
+      font-size:
+        .96rem;
+    }
+
+
+    .focus-card {
+
+      display:
+        flex;
+
+      flex-direction:
+        column;
+
+      justify-content:
+        center;
+    }
+
+
+    .focus-title {
+
+      margin-bottom:
+        20px;
+
+      color:
+        var(--subtle);
+
+      font-size:
+        .72rem;
+
+      font-weight:
+        600;
+
+      text-transform:
+        uppercase;
+
+      letter-spacing:
+        .13em;
+    }
+
+
+    .focus-item {
+
+      padding:
+        14px 0;
+
+      border-bottom:
+        1px solid rgba(255,255,255,.055);
+
+      color:
+        #cbd5e1;
+
+      font-size:
+        .92rem;
+    }
+
+
+    .focus-item:last-child {
+
+      border-bottom:
+        none;
+
+      padding-bottom:
+        0;
+    }
+
+
+    /* =====================================================
+       PROJECTS
+    ===================================================== */
+
+    .projects-section {
+      margin-bottom: 70px;
+    }
+
+
+    .section-heading {
+      margin-bottom: 25px;
+    }
+
+
+    .section-heading span {
+
+      display:
+        block;
+
+      margin-bottom:
+        9px;
+
+      color:
+        var(--blue-light);
+
+      font-size:
+        .7rem;
+
+      font-weight:
+        600;
+
+      text-transform:
+        uppercase;
+
+      letter-spacing:
+        .13em;
+    }
+
+
+    .section-heading h2 {
+
+      margin:
+        0;
+
+      color:
+        white;
+
+      font-size:
+        2rem;
+
+      font-weight:
+        600;
+
+      letter-spacing:
+        -.045em;
+    }
+
+
+    .section-heading p {
+
+      max-width:
+        600px;
+
+      margin:
+        10px 0 0;
+
+      color:
+        var(--subtle);
+
+      font-size:
+        .9rem;
+
+      line-height:
+        1.7;
+    }
+
+
+    .projects {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(3,1fr);
+
+      gap:
+        20px;
+
+      position:
+        relative;
+    }
+
+
+    .project-card {
+
+      min-height:
+        285px;
+
+      padding:
+        27px;
+
+      display:
+        flex;
+
+      flex-direction:
+        column;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255,255,255,.055),
+          rgba(255,255,255,.018)
+        ),
+        rgba(30,41,59,.45);
+
+      border:
+        1px solid rgba(255,255,255,.075);
+
+      border-radius:
+        25px;
+
+      backdrop-filter:
+        blur(20px);
+
+      -webkit-backdrop-filter:
+        blur(20px);
+
+      box-shadow:
+        0 16px 40px rgba(0,0,0,.22),
+        inset 0 1px 0 rgba(255,255,255,.06);
+
+      transition:
+        border-color .1s ease,
+        box-shadow .1s ease;
+    }
+
+
+    .project-card:hover {
+
+      border-color:
+        rgba(59,130,246,.25);
+
+      box-shadow:
+        0 25px 55px rgba(0,0,0,.32),
+        0 0 30px rgba(59,130,246,.05);
+    }
+
+
+    .project-badge {
+
+      position:
+        relative;
+
+      z-index:
+        150;
+
+      width:
+        fit-content;
+
+      padding:
+        6px 10px;
+
+      border-radius:
+        999px;
+
+      background:
+        rgba(59,130,246,.09);
+
+      border:
+        1px solid rgba(59,130,246,.18);
+
+      color:
+        var(--blue-light);
+
+      font-size:
+        .65rem;
+
+      font-weight:
+        600;
+
+      text-transform:
+        uppercase;
+
+      letter-spacing:
+        .11em;
+    }
+
+
+    .project-card h3 {
+
+      position:
+        relative;
+
+      z-index:
+        150;
+
+      margin:
+        23px 0 12px;
+
+      color:
+        white;
+
+      font-size:
+        1.3rem;
+
+      font-weight:
+        600;
+
+      letter-spacing:
+        -.035em;
+    }
+
+
+    .project-card p {
+
+      position:
+        relative;
+
+      z-index:
+        150;
+
+      margin:
+        0;
+
+      color:
+        var(--muted);
+
+      font-size:
+        .88rem;
+
+      line-height:
+        1.7;
+    }
+
+
+    .project-link {
+
+      position:
+        relative;
+
+      z-index:
+        150;
+
+      margin-top:
+        auto;
+
+      padding-top:
+        25px;
+
+      color:
+        var(--blue-light);
+
+      text-decoration:
+        none;
+
+      font-size:
+        .83rem;
+
+      font-weight:
+        500;
+    }
+
+
+    .project-link:hover {
+      color: white;
+    }
+
+
+    /* =====================================================
+       ONE CARD GOES COMPLETELY INSANE
+    ===================================================== */
+
+    .project-card.escaped {
+
+      z-index:
+        9999;
+
+      animation:
+        none !important;
+
+      will-change:
+        transform;
+
+      transition:
+        none !important;
+    }
+
+
+    /* =====================================================
+       FOOTER
+    ===================================================== */
+
+    footer {
+
+      padding:
+        30px 0 10px;
+
+      border-top:
+        1px solid rgba(255,255,255,.06);
+
+      color:
+        var(--subtle);
+
+      font-size:
+        .8rem;
+    }
+
+
+    .footer-content {
+
+      display:
+        flex;
+
+      flex-direction:
+        column;
+
+      align-items:
+        flex-start;
+
+      gap:
+        17px;
+    }
+
+
+    .footer-main {
+      line-height: 1.7;
+    }
+
+
+    .footer-main strong {
+
+      color:
+        #94a3b8;
+
+      font-weight:
+        500;
+    }
+
+
+    .github-link {
+
+      display:
+        inline-flex;
+
+      align-items:
+        center;
+
+      gap:
+        10px;
+
+      padding:
+        9px 13px 9px 9px;
+
+      border-radius:
+        13px;
+
+      background:
+        rgba(0,0,0,.55);
+
+      border:
+        1px solid rgba(255,255,255,.08);
+
+      color:
+        #cbd5e1;
+
+      text-decoration:
+        none;
+
+      font-size:
+        .8rem;
+
+      font-weight:
+        500;
+    }
+
+
+    .github-logo {
+
+      width:
+        27px;
+
+      height:
+        27px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      border-radius:
+        8px;
+
+      background:
+        #050505;
+    }
+
+
+    .github-logo svg {
+
+      width:
+        17px;
+
+      height:
+        17px;
+    }
+
+
+    /* =====================================================
+       MOBILE
+    ===================================================== */
+
+    @media (max-width:850px) {
+
+      .about {
+        grid-template-columns: 1fr;
+      }
+
+      .projects {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+
+    @media (max-width:600px) {
+
+      .page {
+
+        width:
+          min(100% - 24px,1120px);
+
+        padding-top:
+          35px;
+      }
+
+
+      .hero {
+
+        padding:
+          32px 25px;
+
+        border-radius:
+          27px;
+      }
+
+
+      .hero h1 {
+        font-size: 3.5rem;
+      }
+
+
+      .hero-description {
+        font-size: 1rem;
+      }
+
+
+      .about {
+
+        gap:
+          16px;
+
+        margin-bottom:
+          55px;
+      }
+
+
+      .about-card {
+
+        padding:
+          27px;
+
+        border-radius:
+          24px;
+      }
+
+
+      .projects {
+        grid-template-columns: 1fr;
+      }
+
+
+      .project-card {
+        min-height: 260px;
+      }
+
+
+      .hero::after,
+      .about-card::after,
+      .project-card::after {
+
+        width:
+          190%;
+
+        left:
+          -45%;
+      }
+    }
+
+  </style>
+</head>
+
+
+<body>
+
+  <div class="page">
+
+    <header class="hero">
+
+      <div class="hero-content">
+
+        <span class="eyebrow">
+          Personal Studio
+        </span>
+
+        <h1>
+          Moon <span>Studio</span>
+        </h1>
+
+        <p class="hero-description">
+          Moon Studio is a personal space for creating, exploring, and sharing
+          apps, tools, experiments, and ideas around technology.
+        </p>
+
+        <div class="established">
+          Website established
+          <strong>October 4, 2026</strong>
+        </div>
+
+      </div>
+
+    </header>
+
+
+    <section class="about">
+
+      <div class="about-card">
+
+        <h2>
+          About Moon Studio
+        </h2>
+
+        <p>
+          Moon Studio is where ideas become small projects, applications,
+          experiments, and useful tools. It is a place to explore technology,
+          learn through building, and share things created along the way.
+        </p>
+
+      </div>
+
+
+      <div class="about-card focus-card">
+
+        <div class="focus-title">
+          What we create
+        </div>
+
+        <div class="focus-item">
+          Apps &amp; Tools
+        </div>
+
+        <div class="focus-item">
+          Web Projects
+        </div>
+
+        <div class="focus-item">
+          Experiments
+        </div>
+
+        <div class="focus-item">
+          Technology
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <section class="projects-section">
+
+      <div class="section-heading">
+
+        <span>
+          Selected Projects
+        </span>
+
+        <h2>
+          Things we're building
+        </h2>
+
+        <p>
+          A few projects developed as part of Moon Studio.
+        </p>
+
+      </div>
+
+
+      <div class="projects">
+
+        <article class="project-card">
+
+          <span class="project-badge">
+            Project
+          </span>
+
+          <h3>
+            GitShowcase
+          </h3>
+
+          <p>
+            A place to explore source code, software projects,
+            tools, and resources from Moon Studio.
+          </p>
+
+          <a
+            href="https://gitshowcase.moonstudio.us.ci/"
+            class="project-link"
+          >
+            View project
+          </a>
+
+        </article>
+
+
+        <article class="project-card escaped">
+
+          <span class="project-badge">
+            Beta
+          </span>
+
+          <h3>
+            WiFi Checker (Web)
+          </h3>
+
+          <p>
+            A browser-based version of WiFi Checker,
+            bringing the project experience to the web.
+          </p>
+
+          <a
+            href="https://wifichecker.moonstudio.us.ci/"
+            class="project-link"
+          >
+            Open project
+          </a>
+
+        </article>
+
+
+        <article class="project-card">
+
+          <span class="project-badge">
+            Beta
+          </span>
+
+          <h3>
+            WiFi Checker (App)
+          </h3>
+
+          <p>
+            An Android application developed as part
+            of the Moon Studio project collection.
+          </p>
+
+          <a
+            href="https://gitshowcase.moonstudio.us.ci/wificheckerbeta"
+            class="project-link"
+          >
+            View app
+          </a>
+
+        </article>
+
+      </div>
+
+    </section>
+
+
+    <footer>
+
+      <div class="footer-content">
+
+        <div class="footer-main">
+          © 2026 Moon Studio<br>
+          <strong>Projects, apps &amp; tools</strong>
+        </div>
+
+
+        <a
+          href="https://github.com/Moon50112344/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="github-link"
+          aria-label="Moon Studio on GitHub"
+        >
+
+          <span class="github-logo">
+
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+
+              <path
+                fill="white"
+                d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56v-2.16c-3.2.69-3.87-1.54-3.87-1.54-.53-1.33-1.31-1.69-1.31-1.69-1.07-.73.08-.72.08-.72 1.18.08 1.8 1.21 1.8 1.21 1.05 1.8 2.75 1.28 3.42.98.11-.76.41-1.28.75-1.58-2.55-.29-5.23-1.28-5.23-5.69 0-1.26.45-2.29 1.2-3.1-.12-.29-.52-1.47.11-3.06 0 0 .98-.31 3.2 1.18a11.1 11.1 0 0 1 5.82 0c2.22-1.49 3.2-1.18 3.2-1.18.63 1.59.23 2.77.11 3.06.75.81.8 2.18v3.23c0 .31.21.67.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5Z"
+              />
+
+            </svg>
+
+          </span>
+
+          GitHub
+
+        </a>
+
+      </div>
+
+    </footer>
+
+  </div>
+
+
+  <script>
+
+    /* =====================================================
+       EXTREME GLITCH ENGINE
+    ===================================================== */
+
+    const brokenCard =
+      document.querySelector(".escaped");
+
+    const allCards =
+      document.querySelectorAll(
+        ".hero, .about-card, .project-card"
+      );
+
+
+    function random(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+
+    /*
+      CREATE EXTRA CORRUPTION BLOCK
+      FOR EVERY CARD
+    */
+
+    allCards.forEach(card => {
+
+      const block =
+        document.createElement("div");
+
+      block.className =
+        "glitch-block";
+
+      block.style.setProperty(
+        "--block-x",
+        "0px"
+      );
+
+      block.style.setProperty(
+        "--block-y",
+        "0px"
+      );
+
+      block.style.setProperty(
+        "--block-skew",
+        "0deg"
+      );
+
+      block.style.setProperty(
+        "--block-scale",
+        "1"
+      );
+
+      card.appendChild(block);
+
+    });
+
+
+    const glitchBlocks =
+      document.querySelectorAll(
+        ".glitch-block"
+      );
+
+
+    /* =====================================================
+       HARD GLITCH
+    ===================================================== */
+
+    function hardGlitch(card) {
+
+      if (!card) return;
+
+
+      const x =
+        random(-260,260);
+
+      const y =
+        random(-90,90);
+
+      const r =
+        random(-30,30);
+
+      const scale =
+        random(.55,1.9);
+
+
+      card.style.setProperty(
+        "--gx",
+        `${x}px`
+      );
+
+      card.style.setProperty(
+        "--gy",
+        `${y}px`
+      );
+
+      card.style.setProperty(
+        "--gr",
+        `${r}deg`
+      );
+
+      card.style.setProperty(
+        "--gs",
+        scale
+      );
+
+
+      card.style.setProperty(
+        "--slice-x",
+        `${random(-420,420)}px`
+      );
+
+      card.style.setProperty(
+        "--slice-y",
+        `${random(-150,150)}px`
+      );
+
+      card.style.setProperty(
+        "--slice-r",
+        `${random(-30,30)}deg`
+      );
+
+      card.style.setProperty(
+        "--slice-scale",
+        random(.5,2.5)
+      );
+
+
+      /*
+        WHOLE CARD SNAP
+      */
+
+      if (!card.classList.contains("escaped")) {
+
+        card.style.transform =
+          `
+          translate3d(
+            ${random(-35,35)}px,
+            ${random(-20,20)}px,
+            0
+          )
+          rotate(${random(-5,5)}deg)
+          scale(${random(.93,1.08)})
+          `;
+
+
+        setTimeout(() => {
+
+          card.style.transform = "";
+
+        }, random(15,55));
+
+      }
+
+
+      /*
+        EXTRA CORRUPTION BLOCK
+      */
+
+      const block =
+        card.querySelector(".glitch-block");
+
+      if (block) {
+
+        block.style.opacity =
+          random(.45,1);
+
+        block.style.setProperty(
+          "--block-x",
+          `${random(-350,350)}px`
+        );
+
+        block.style.setProperty(
+          "--block-y",
+          `${random(-100,100)}px`
+        );
+
+        block.style.setProperty(
+          "--block-skew",
+          `${random(-45,45)}deg`
+        );
+
+        block.style.setProperty(
+          "--block-scale",
+          random(.3,2.5)
+        );
+
+
+        setTimeout(() => {
+
+          block.style.opacity = 0;
+
+        }, random(20,70));
+
+      }
+
+
+      /*
+        RESET
+      */
+
+      setTimeout(() => {
+
+        card.style.setProperty(
+          "--gx",
+          "0px"
+        );
+
+        card.style.setProperty(
+          "--gy",
+          "0px"
+        );
+
+        card.style.setProperty(
+          "--gr",
+          "0deg"
+        );
+
+        card.style.setProperty(
+          "--gs",
+          "1"
+        );
+
+      }, random(25,85));
+
+    }
+
+
+    /* =====================================================
+       ULTRA FAST GLITCH LOOP
+    ===================================================== */
+
+    function glitchLoop() {
+
+      allCards.forEach(card => {
+
+        /*
+          EVERY CARD
+        */
+
+        if (Math.random() < .99) {
+
+          hardGlitch(card);
+
+        }
+
+
+        /*
+          SOMETIMES DOUBLE GLITCH
+        */
+
+        if (Math.random() < .35) {
+
+          setTimeout(() => {
+
+            hardGlitch(card);
+
+          }, random(10,35));
+
+        }
+
+      });
+
+
+      setTimeout(
+        glitchLoop,
+        random(25,65)
+      );
+
+    }
+
+
+    /* =====================================================
+       ABSOLUTELY INSANE CARD
+    ===================================================== */
+
+    function moveBrokenCard() {
+
+      if (!brokenCard) return;
+
+
+      const x =
+        random(-520,520);
+
+      const y =
+        random(-380,380);
+
+      const r =
+        random(-45,45);
+
+      const s =
+        random(.55,1.5);
+
+
+      brokenCard.style.transform =
+        `
+        translate3d(
+          ${x}px,
+          ${y}px,
+          0
+        )
+        rotate(${r}deg)
+        scale(${s})
+        skew(
+          ${random(-18,18)}deg,
+          ${random(-12,12)}deg
+        )
+        `;
+
+
+      brokenCard.style.zIndex =
+        Math.floor(
+          random(500,99999)
+        );
+
+
+      /*
+        DOUBLE SNAP
+      */
+
+      if (Math.random() < .8) {
+
+        setTimeout(() => {
+
+          brokenCard.style.transform =
+            `
+            translate3d(
+              ${random(-650,650)}px,
+              ${random(-500,500)}px,
+              0
+            )
+            rotate(${random(-65,65)}deg)
+            scale(${random(.45,1.7)})
+            skew(
+              ${random(-25,25)}deg,
+              ${random(-18,18)}deg
+            )
+            `;
+
+        }, random(15,55));
+
+      }
+
+
+      /*
+        TRIPLE SNAP
+      */
+
+      if (Math.random() < .4) {
+
+        setTimeout(() => {
+
+          brokenCard.style.transform =
+            `
+            translate3d(
+              ${random(-700,700)}px,
+              ${random(-550,550)}px,
+              0
+            )
+            rotate(${random(-80,80)}deg)
+            scale(${random(.4,1.8)})
+            skew(
+              ${random(-30,30)}deg,
+              ${random(-20,20)}deg
+            )
+            `;
+
+        }, random(55,100));
+
+      }
+
+
+      setTimeout(
+        moveBrokenCard,
+        random(80,220)
+      );
+
+    }
+
+
+    /* =====================================================
+       VIOLENT SNAP
+    ===================================================== */
+
+    function violentSnap() {
+
+      if (!brokenCard) return;
+
+
+      brokenCard.style.transform =
+        `
+        translate3d(
+          ${random(-700,700)}px,
+          ${random(-550,550)}px,
+          0
+        )
+        rotate(${random(-80,80)}deg)
+        scale(${random(.4,1.8)})
+        skew(
+          ${random(-30,30)}deg,
+          ${random(-20,20)}deg
+        )
+        `;
+
+
+      brokenCard.style.zIndex =
+        Math.floor(
+          random(1000,100000)
+        );
+
+
+      setTimeout(
+        violentSnap,
+        random(300,900)
+      );
+
+    }
+
+
+    /* =====================================================
+       TEXT CORRUPTION
+    ===================================================== */
+
+    function textCorruption() {
+
+      const texts =
+        document.querySelectorAll(
+          ".hero h1, .about-card h2, .project-card h3"
+        );
+
+
+      texts.forEach(text => {
+
+        if (Math.random() < .95) {
+
+          text.style.transform =
+            `
+            translate(
+              ${random(-30,30)}px,
+              ${random(-10,10)}px
+            )
+            skewX(${random(-25,25)}deg)
+            `;
+
+
+          text.style.textShadow =
+            `
+            ${random(-35,35)}px 0 rgba(255,0,70,1),
+            ${random(-35,35)}px 0 rgba(0,220,255,1)
+            `;
+
+
+          setTimeout(() => {
+
+            text.style.transform = "";
+            text.style.textShadow = "";
+
+          }, random(15,65));
+
+        }
+
+      });
+
+
+      setTimeout(
+        textCorruption,
+        random(30,90)
+      );
+
+    }
+
+
+    /* =====================================================
+       RANDOM CARD ROTATION / POSITION
+    ===================================================== */
+
+    function randomCardChaos() {
+
+      allCards.forEach(card => {
+
+        if (
+          card === brokenCard
+        ) return;
+
+
+        if (Math.random() < .45) {
+
+          card.style.transform =
+            `
+            translate3d(
+              ${random(-28,28)}px,
+              ${random(-18,18)}px,
+              0
+            )
+            rotate(${random(-4,4)}deg)
+            skewX(${random(-5,5)}deg)
+            `;
+
+
+          setTimeout(() => {
+
+            card.style.transform = "";
+
+          }, random(15,60));
+
+        }
+
+      });
+
+
+      setTimeout(
+        randomCardChaos,
+        random(40,100)
+      );
+
+    }
+
+
+    /* =====================================================
+       START
+    ===================================================== */
+
+    window.addEventListener(
+      "load",
+      () => {
+
+        setTimeout(
+          glitchLoop,
+          50
+        );
+
+        setTimeout(
+          moveBrokenCard,
+          100
+        );
+
+        setTimeout(
+          violentSnap,
+          200
+        );
+
+        setTimeout(
+          textCorruption,
+          80
+        );
+
+        setTimeout(
+          randomCardChaos,
+          100
+        );
+
+      }
+    );
+
+
+    /* =====================================================
+       CLICK = NUCLEAR MODE
+    ===================================================== */
+
+    if (brokenCard) {
+
+      brokenCard.addEventListener(
+        "click",
+        () => {
+
+          for (
+            let i = 0;
+            i < 18;
+            i++
+          ) {
+
+            setTimeout(() => {
+
+              brokenCard.style.transform =
+                `
+                translate3d(
+                  ${random(-800,800)}px,
+                  ${random(-650,650)}px,
+                  0
+                )
+                rotate(${random(-100,100)}deg)
+                scale(${random(.35,1.9)})
+                skew(
+                  ${random(-35,35)}deg,
+                  ${random(-25,25)}deg
+                )
+                `;
+
+              brokenCard.style.zIndex =
+                Math.floor(
+                  random(1000,100000)
+                );
+
+            }, i * 25);
+
+          }
+
+        }
+      );
+
+    }
+
+
+    /* =====================================================
+       EXTRA RANDOM GLITCH BURSTS
+    ===================================================== */
+
+    setInterval(() => {
+
+      const card =
+        allCards[
+          Math.floor(
+            Math.random() * allCards.length
+          )
+        ];
+
+      hardGlitch(card);
+
+      if (Math.random() < .6) {
+
+        setTimeout(() => {
+
+          hardGlitch(card);
+
+        }, random(5,25));
+
+      }
+
+    }, 35);
+
+  </script>
+
+</body>
+    </html>

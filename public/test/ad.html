@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WiFi Checker Ad Test</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #070b14;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      padding-bottom: 110px;
+    }
+
+    .page {
+      padding: 50px 20px;
+      text-align: center;
+    }
+
+    .page h1 {
+      margin: 0 0 10px;
+      font-size: 30px;
+    }
+
+    .page p {
+      margin: 0;
+      color: #aeb7c3;
+    }
+
+    .ad-dock {
+      position: fixed;
+      left: 50%;
+      bottom: 17px;
+      transform: translateX(-50%);
+      width: min(720px, calc(100% - 20px));
+      z-index: 9999;
+    }
+
+    .ad-box {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-height: 82px;
+      padding: 16px;
+      overflow: hidden;
+      background: #10151c;
+      border: 1px solid #293441;
+      border-radius: 2px;
+      box-shadow: 0 5px 18px rgba(0, 0, 0, .45);
+      cursor: pointer;
+    }
+
+    .ad-box.hidden {
+      display: none;
+    }
+
+    /* =========================
+       ANIMATED BACKGROUND
+       ========================= */
+
+    .ad-animation {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      opacity: .65;
+    }
+
+    .circle-large {
+      position: absolute;
+      width: 170px;
+      height: 170px;
+      right: -35px;
+      top: -45px;
+      border: 1px solid rgba(47, 139, 255, .22);
+      border-radius: 50%;
+      animation: rotateCircle 12s linear infinite;
+    }
+
+    .circle-large::before {
+      content: "";
+      position: absolute;
+      width: 115px;
+      height: 115px;
+      left: 27px;
+      top: 27px;
+      border: 1px dashed rgba(47, 139, 255, .22);
+      border-radius: 50%;
+      animation: rotateReverse 8s linear infinite;
+    }
+
+    .circle-large::after {
+      content: "";
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      right: 20px;
+      top: 45px;
+      background: #2f8bff;
+      border-radius: 50%;
+      box-shadow: 0 0 8px rgba(47, 139, 255, .8);
+      animation: orbitDot 4s linear infinite;
+    }
+
+    .circle-small {
+      position: absolute;
+      width: 90px;
+      height: 90px;
+      left: 42%;
+      bottom: -65px;
+      border: 1px solid rgba(47, 139, 255, .16);
+      border-radius: 50%;
+      animation: floatCircle 7s ease-in-out infinite;
+    }
+
+    .diagonal {
+      position: absolute;
+      width: 260px;
+      height: 1px;
+      background: rgba(47, 139, 255, .13);
+      transform: rotate(-28deg);
+      animation: diagonalMove 7s linear infinite;
+    }
+
+    .diagonal.one {
+      left: -280px;
+      top: 15px;
+    }
+
+    .diagonal.two {
+      left: -350px;
+      bottom: 15px;
+      animation-delay: 2.5s;
+    }
+
+    .diagonal.three {
+      left: -420px;
+      top: 55px;
+      animation-delay: 4s;
+    }
+
+    .moving-dot {
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      background: #2f8bff;
+      border-radius: 50%;
+      box-shadow: 0 0 8px rgba(47, 139, 255, .7);
+      animation: diagonalDot 6s linear infinite;
+    }
+
+    .dot-one {
+      left: 10%;
+      top: 10%;
+    }
+
+    .dot-two {
+      left: 30%;
+      top: 70%;
+      animation-delay: 2s;
+    }
+
+    .dot-three {
+      left: 60%;
+      top: 20%;
+      animation-delay: 4s;
+    }
+
+    @keyframes rotateCircle {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes rotateReverse {
+      from {
+        transform: rotate(360deg);
+      }
+
+      to {
+        transform: rotate(0deg);
+      }
+    }
+
+    @keyframes orbitDot {
+      from {
+        transform: rotate(0deg) translateX(70px) rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg) translateX(70px) rotate(-360deg);
+      }
+    }
+
+    @keyframes floatCircle {
+      0%,
+      100% {
+        transform: translate(0, 0) rotate(0deg);
+      }
+
+      50% {
+        transform: translate(60px, -30px) rotate(180deg);
+      }
+    }
+
+    @keyframes diagonalMove {
+      0% {
+        transform: translateX(-300px) rotate(-28deg);
+      }
+
+      100% {
+        transform: translateX(1000px) rotate(-28deg);
+      }
+    }
+
+    @keyframes diagonalDot {
+      0% {
+        transform: translate(-30px, 40px);
+        opacity: 0;
+      }
+
+      15% {
+        opacity: .8;
+      }
+
+      85% {
+        opacity: .8;
+      }
+
+      100% {
+        transform: translate(300px, -120px);
+        opacity: 0;
+      }
+    }
+
+    /* =========================
+       AD CONTENT
+       ========================= */
+
+    .ad-label {
+      position: absolute;
+      top: 0;
+      left: 0;
+      padding: 3px 7px;
+      background: #242d38;
+      color: #b8c2ce;
+      font-size: 9px;
+      font-weight: 700;
+      border-radius: 0 0 5px 0;
+      letter-spacing: .4px;
+      z-index: 5;
+    }
+
+    .ad-icon {
+      position: relative;
+      width: 50px;
+      height: 50px;
+      flex: 0 0 50px;
+      object-fit: cover;
+      border-radius: 2px;
+      z-index: 4;
+    }
+
+    .ad-content {
+      position: relative;
+      min-width: 0;
+      flex: 1;
+      z-index: 4;
+    }
+
+    .ad-brand {
+      margin-bottom: 2px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .2px;
+    }
+
+    .moon {
+      color: #fff;
+    }
+
+    .studio {
+      color: #2f8bff;
+    }
+
+    .ad-title {
+      margin: 0;
+      color: #fff;
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .ad-description {
+      margin: 3px 0 0;
+      color: #aeb7c3;
+      font-size: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* =========================
+       CLOSE BUTTON
+       ========================= */
+
+    .ad-close {
+      display: none;
+      position: absolute;
+      top: 7px;
+      right: 7px;
+      width: 30px;
+      height: 30px;
+      padding: 6px;
+      border: 1px solid #354352;
+      border-radius: 50%;
+      background: rgba(16, 21, 28, .9);
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    .ad-close.visible {
+      display: block;
+    }
+
+    .ad-close svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      fill: none;
+      stroke: #cbd5e1;
+      stroke-width: 2;
+      stroke-linecap: round;
+    }
+
+    .ad-close:hover {
+      background: rgba(35, 45, 57, .95);
+    }
+
+    /* =========================
+       MOBILE
+       ========================= */
+
+    @media (max-width: 600px) {
+      .ad-dock {
+        width: calc(100% - 12px);
+        bottom: 11px;
+      }
+
+      .ad-box {
+        gap: 10px;
+        min-height: 72px;
+        padding: 12px;
+      }
+
+      .ad-icon {
+        width: 44px;
+        height: 44px;
+        flex-basis: 44px;
+      }
+
+      .ad-title {
+        font-size: 15px;
+      }
+
+      .ad-description {
+        font-size: 11px;
+      }
+
+      .circle-large {
+        width: 140px;
+        height: 140px;
+      }
+    }
+
+    @media (max-width: 390px) {
+      .ad-description {
+        display: block;
+        font-size: 10px;
+        white-space: normal;
+        line-height: 1.3;
+        padding-right: 25px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="page">
+    <h1>WiFi Checker Ad Test</h1>
+
+    <p>
+      Đây là trang test quảng cáo WiFi Checker của Moon Studio.
+    </p>
+  </main>
+
+
+  <!-- =========================
+       AD
+       ========================= -->
+
+  <div class="ad-dock" id="adDock">
+
+    <div
+      class="ad-box"
+      id="adBox"
+      role="link"
+      tabindex="0"
+      aria-label="Xem WiFi Checker"
+    >
+
+      <!-- Animated background -->
+      <div class="ad-animation">
+
+        <div class="circle-large"></div>
+
+        <div class="circle-small"></div>
+
+        <div class="diagonal one"></div>
+        <div class="diagonal two"></div>
+        <div class="diagonal three"></div>
+
+        <div class="moving-dot dot-one"></div>
+        <div class="moving-dot dot-two"></div>
+        <div class="moving-dot dot-three"></div>
+
+      </div>
+
+
+      <!-- Ad label -->
+      <span class="ad-label">
+        Ad
+      </span>
+
+
+      <!-- WiFi Checker icon -->
+      <img
+        class="ad-icon"
+        src="https://raw.githubusercontent.com/Moon50112344/Wifi-Checker-Beta/main/playstore_icon.png"
+        alt="WiFi Checker"
+      >
+
+
+      <!-- Content -->
+      <div class="ad-content">
+
+        <div class="ad-brand">
+          <span class="moon">Moon</span> <span class="studio">Studio</span>
+        </div>
+
+        <h2 class="ad-title">
+          WiFi Checker
+        </h2>
+
+        <p class="ad-description">
+          Kiểm tra kết nối Wi-Fi trên Android.
+        </p>
+
+      </div>
+
+
+      <!-- Close button -->
+      <button
+        class="ad-close"
+        id="adClose"
+        type="button"
+        aria-label="Đóng quảng cáo"
+      >
+
+        <svg
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path d="M6 6l12 12M18 6L6 18"></path>
+        </svg>
+
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <script>
+    const adBox = document.getElementById("adBox");
+    const adClose = document.getElementById("adClose");
+
+    const adURL =
+      "https://gitshowcase.moonstudio.us.ci/wificheckerbeta";
+
+
+    /*
+     * Mở trang WiFi Checker
+     */
+    function openAd() {
+      window.location.href = adURL;
+    }
+
+
+    /*
+     * Click vào quảng cáo.
+     *
+     * Không tính nút X.
+     */
+    adBox.addEventListener("click", function(event) {
+
+      if (event.target.closest("#adClose")) {
+        return;
+      }
+
+      openAd();
+
+    });
+
+
+    /*
+     * Enter / Space cũng mở quảng cáo.
+     */
+    adBox.addEventListener("keydown", function(event) {
+
+      if (
+        event.key === "Enter" ||
+        event.key === " "
+      ) {
+
+        if (event.target.closest("#adClose")) {
+          return;
+        }
+
+        event.preventDefault();
+
+        openAd();
+      }
+
+    });
+
+
+    /*
+     * =========================
+     * QUẢNG CÁO
+     * =========================
+     *
+     * 0s:
+     * Quảng cáo hiện.
+     * X chưa hiện.
+     *
+     * 30s:
+     * X hiện.
+     *
+     * Người dùng phải tự bấm X.
+     *
+     * Sau khi bấm X:
+     * Quảng cáo đóng.
+     *
+     * 30s sau:
+     * Quảng cáo hiện lại.
+     *
+     * 30s tiếp:
+     * X hiện.
+     *
+     * Lặp vô hạn.
+     */
+
+
+    let closeTimer = null;
+    let showAdTimer = null;
+
+
+    /*
+     * Bắt đầu thời gian chờ
+     * để hiện X.
+     */
+    function startCloseTimer() {
+
+      clearTimeout(closeTimer);
+
+      adClose.classList.remove("visible");
+
+      closeTimer = setTimeout(function() {
+
+        adClose.classList.add("visible");
+
+      }, 30000);
+
+    }
+
+
+    /*
+     * Người dùng bấm X.
+     */
+    adClose.addEventListener("click", function(event) {
+
+      event.stopPropagation();
+
+
+      /*
+       * Đóng quảng cáo.
+       */
+      adBox.classList.add("hidden");
+
+
+      /*
+       * Ẩn X.
+       */
+      adClose.classList.remove("visible");
+
+
+      /*
+       * Chờ 30 giây rồi hiện lại.
+       */
+      clearTimeout(showAdTimer);
+
+      showAdTimer = setTimeout(function() {
+
+        adBox.classList.remove("hidden");
+
+
+        /*
+         * Quảng cáo hiện lại.
+         * X phải chờ thêm 30 giây.
+         */
+        startCloseTimer();
+
+      }, 30000);
+
+    });
+
+
+    /*
+     * Bắt đầu chu kỳ đầu tiên.
+     *
+     * Quảng cáo hiện ngay.
+     * X chờ 30 giây.
+     */
+    startCloseTimer();
+
+  </script>
+
+</body>
+</html>
